@@ -26,8 +26,6 @@ func DBinstance() *mongo.Client{
 		log.Fatal(err)
 	}
 
-
-	
 	err = client.Ping(ctx,nil)
 	if err != nil{
 		log.Fatal(err)
@@ -35,4 +33,12 @@ func DBinstance() *mongo.Client{
 
 	fmt.Println("Connected to MongoDB!")
 	return client
+}
+
+
+var Client *mongo.Client = DBinstance()
+
+func OpenCollection(client *mongo.Client , collectionName string) *mongo.Collection{
+	var collection *mongo.Collection = client.Database("cluster0").Collection(collectionName)
+	return collection
 }

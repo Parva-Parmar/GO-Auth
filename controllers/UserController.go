@@ -31,4 +31,13 @@ func Login()
 
 func GetUsers()
 
-func GetUser()
+func GetUser() gin.HandlerFunc{
+	return func(c *gin.Context){
+		userID := c.Param("user_id")
+
+		if err := helper.MatchUserTypetoUid(c,userID);err != nil{
+			c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
+			return
+		}
+	}
+}

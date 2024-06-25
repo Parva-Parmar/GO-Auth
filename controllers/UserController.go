@@ -33,14 +33,21 @@ func GetUsers()
 
 func GetUser() gin.HandlerFunc{
 	return func(c *gin.Context){
-		userID := c.Param("user_id")
+		userId := c.Param("user_id")
 
-		if err := helper.MatchUserTypetoUid(c,userID);err != nil{
+		if err := helper.MatchUserTypetoUid(c,userId);err != nil{
 			c.JSON(http.StatusBadRequest,gin.H{"error":err.Error()})
 			return
 		}
 		var ctx,cancel = context.WithTimeout(context.Background(),100*time.Second)
 
 		var user models.User
+		err := UserCollection.FindOne(ctx,bson.M{"user_id":userId}).Decode(&user)
+		defer cancel()
+		if err != nil{
+			c.JSON(http.StatusInternalServerError,gin.H{"error":err.Error()})
+			return
+		}
+		c.JSON(http.StatusOk,user)
 	}
 }

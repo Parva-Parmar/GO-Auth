@@ -56,3 +56,8 @@ func GenerateAllTokens(email string, firstName string, lastName string, userType
 	}
 	return token,refershToken,err
 }
+
+func UpdateAllTokens(signedToken string,signedRefreshToken string,userId string){
+	var ctx,cancel = context.WithTimeout(context.Background(),100*time.Second)
+	var updateObj primitive.D
+}
